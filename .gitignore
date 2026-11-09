@@ -1,2 +1,5 @@
 data/raw.jsonl
 __pycache__/
+LAUNCH.md
+hf/
+shot-*.png
