@@ -2,9 +2,9 @@
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The Unbuilt Index: what Hacker News said it would pay for</title>
-<meta name="description" content="11,986 Hacker News comments and posts with “I'd pay for”, “someone should build” and “is there a tool that”, grouped by what people asked for. Free, open data. Pick one and build it.">
+<meta name="description" content="6,032 Hacker News requests (“I'd pay for”, “someone should build”, “is there a tool that”), grouped by what people asked for. Free, open data. Pick one and build it.">
 <meta property="og:title" content="The Unbuilt Index: what Hacker News said it would pay for">
-<meta property="og:description" content="11,986 HN comments and posts where people said “I'd pay for…” or “someone should build…”. Ranked by how many different people asked.">
+<meta property="og:description" content="6,032 times HN said “I'd pay for…” or “someone should build…”. Ranked by how many different people asked.">
 <meta property="og:image" content="https://nidhi-bhai.github.io/unbuilt/og.png">
 <meta property="og:url" content="https://nidhi-bhai.github.io/unbuilt/">
 <meta name="twitter:card" content="summary_large_image">
@@ -31,8 +31,8 @@ button{cursor:pointer;border:0;border-radius:10px;padding:12px 16px;font-weight:
 .note{color:var(--mut);font-size:14px}footer{color:var(--mut);font-size:13px;margin-top:40px}
 </style></head><body><main>
 <div class="kick">The Unbuilt Index · updated <span id="upd"></span></div>
-<h1>Hacker News told us what it would pay for. <span id="h1n"></span> times.</h1>
-<p class="sub">Every Hacker News comment and post we could pull that says <b>“I'd pay for”</b>, <b>“someone should build”</b>, <b>“take my money”</b> or <b>“is there a tool that”</b>. Grouped by what people asked for. Ranked by how many <i>different</i> people asked. Pick one and build it. They already asked.</p>
+<h1>Hacker News asked for <span id="h1n"></span> things. Here's what it would pay for.</h1>
+<p class="sub">We pulled every Hacker News comment and post we could find that says <b>“I'd pay for”</b>, <b>“someone should build”</b>, <b>“take my money”</b> or <b>“is there a tool that”</b>. Grouped by what people asked for. Ranked by how many <i>different</i> people asked. Pick one and build it. They already asked.</p>
 <div class="stats" id="stats"></div>
 
 <h2>Is anyone asking for your idea?</h2>
@@ -71,8 +71,8 @@ function share(i){const c=D.clusters[i];const q=c.q.length>140?c.q.slice(0,137)+
 function copy(i){navigator.clipboard.writeText(URL0+'#t'+(i+1));const b=document.getElementById('cp'+i);b.textContent='Copied ✨';setTimeout(()=>b.textContent='Copy link',1500)}
 function toggle(i){document.getElementById('it'+i).classList.toggle('open')}
 fetch('data.json').then(r=>r.json()).then(d=>{D=d;const s=d.stats;
- document.getElementById('upd').textContent=d.updated;document.getElementById('h1n').textContent=fmt(s.matched);document.getElementById('nreq').textContent=fmt(s.requests);
- document.getElementById('stats').innerHTML=[[s.matched,'HN comments & posts matched'],[s.requests,'concrete request sentences'],[s.people,'different HN accounts asking'],[s.product,'about software & products'],[s.themes,'themes asked by 3+ people']].map(([n,l])=>`<div class="stat"><b>${fmt(n)}</b><span>${l}</span></div>`).join('');
+ document.getElementById('upd').textContent=d.updated;document.getElementById('h1n').textContent=fmt(s.requests);document.getElementById('nreq').textContent=fmt(s.requests);
+ document.getElementById('stats').innerHTML=[[s.matched,'HN comments & posts phrase-matched'],[s.requests,'concrete request sentences'],[s.people,'different HN accounts asking'],[s.product,'about software & products'],[s.themes,'themes asked by 3+ people']].map(([n,l])=>`<div class="stat"><b>${fmt(n)}</b><span>${l}</span></div>`).join('');
  document.getElementById('themes').innerHTML=d.clusters.map((c,i)=>`<div class="theme" id="t${i+1}"><div class="top"><div class="rank">#${i+1}</div><div class="n">${c.n}<small>people</small></div><div style="flex:1;cursor:pointer" onclick="toggle(${i})"><div class="q">“${E(c.q)}”</div><div class="meta">Asked ${E(c.first.slice(0,4))} → ${E(c.last.slice(0,4))} · ${c.items.length} requests</div><div class="chips">${c.kw.map(k=>`<span>${E(k)}</span>`).join('')}</div></div></div>
  <div class="acts"><button class="ghost" onclick="toggle(${i})">Read all ${c.items.length}</button><button class="ghost" onclick="share(${i})">Share on X</button><button class="ghost" id="cp${i}" onclick="copy(${i})">Copy link</button></div>
  <div class="items" id="it${i}">${c.items.map(item).join('')}</div></div>`).join('');

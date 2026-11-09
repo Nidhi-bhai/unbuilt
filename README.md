@@ -1,6 +1,6 @@
 # The Unbuilt Index
 
-**What Hacker News said it would pay for.** 11,986 HN comments and posts that say "I'd pay for", "someone should build", "take my money" or "is there a tool that", grouped by what people asked for and ranked by how many *different* people asked.
+**What Hacker News said it would pay for.** 6,032 request sentences, pulled from 11,986 HN comments and posts that match "I'd pay for", "someone should build", "take my money" or "is there a tool that", grouped by what people asked for and ranked by how many *different* people asked.
 
 Live: https://nidhi-bhai.github.io/unbuilt/
 
