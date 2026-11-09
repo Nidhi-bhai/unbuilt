@@ -1,0 +1,20 @@
+name: daily-refresh
+on:
+  schedule: [{cron: "30 2 * * *"}]
+  workflow_dispatch:
+permissions: {contents: write}
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install fastembed scikit-learn numpy pillow && sudo apt-get install -y fonts-dejavu-core
+      - run: gunzip -k -f data/raw.jsonl.gz
+      - run: INCREMENTAL=1 python harvest.py
+      - run: python process.py && python cluster.py 0.22 && python build.py && python og.py
+      - run: gzip -k -f data/raw.jsonl && rm data/raw.jsonl
+      - run: |
+          git config user.name "unbuilt-bot"; git config user.email "actions@users.noreply.github.com"
+          git add -A data docs && (git diff --cached --quiet || (git commit -m "daily refresh $(date -u +%F)" && git push))

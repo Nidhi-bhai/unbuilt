@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Unbuilt Index: what Hacker News said it would pay for</title>
+<meta name="description" content="11,986 Hacker News comments and posts with “I'd pay for”, “someone should build” and “is there a tool that”, grouped by what people asked for. Free, open data. Pick one and build it.">
+<meta property="og:title" content="The Unbuilt Index: what Hacker News said it would pay for">
+<meta property="og:description" content="11,986 HN comments and posts where people said “I'd pay for…” or “someone should build…”. Ranked by how many different people asked.">
+<meta property="og:image" content="https://nidhi-bhai.github.io/unbuilt/og.png">
+<meta property="og:url" content="https://nidhi-bhai.github.io/unbuilt/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://nidhi-bhai.github.io/unbuilt/og.png">
+<style>
+:root{--bg:#0b0b0f;--fg:#f2f2f2;--mut:#9a9aa6;--acc:#ff5a1f;--card:#15151c;--line:#26262f}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+a{color:var(--acc)}main{max-width:860px;margin:0 auto;padding:28px 18px 80px}
+.kick{color:var(--acc);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:13px}
+h1{font-size:clamp(30px,6vw,52px);line-height:1.05;margin:10px 0 14px}h2{font-size:26px;margin:48px 0 6px}
+.sub{color:var(--mut);font-size:18px;max-width:680px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:24px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}.stat b{display:block;font-size:26px}.stat span{color:var(--mut);font-size:13px}
+.search{display:flex;gap:8px;flex-wrap:wrap}.search input{flex:1;min-width:220px;padding:14px;border-radius:10px;border:1px solid var(--line);background:#101016;color:var(--fg);font-size:17px}
+button{cursor:pointer;border:0;border-radius:10px;padding:12px 16px;font-weight:700;background:var(--acc);color:#fff;font-size:15px}button.ghost{background:transparent;border:1px solid var(--line);color:var(--fg);padding:8px 12px;font-size:13px}
+.theme{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:12px 0}
+.theme .top{display:flex;gap:16px;align-items:flex-start}.rank{color:var(--mut);font-weight:700;min-width:34px}
+.n{font-size:34px;font-weight:800;color:var(--acc);line-height:1;min-width:56px;text-align:center}.n small{display:block;font-size:11px;color:var(--mut);font-weight:600}
+.q{font-size:18px;font-weight:600}.meta{color:var(--mut);font-size:13px;margin-top:4px}.chips span{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:1px 9px;margin:6px 6px 0 0;font-size:12px;color:var(--mut)}
+.acts{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.items{margin-top:10px;border-top:1px solid var(--line);padding-top:8px;display:none}.items.open{display:block}
+.item{padding:8px 0;border-bottom:1px dashed var(--line);font-size:15px}.item .meta a{color:var(--mut)}
+.res{margin-top:14px}.cta{background:linear-gradient(135deg,#1c1310,#15151c);border:1px solid #3a2418;border-radius:14px;padding:20px;margin-top:40px}
+.note{color:var(--mut);font-size:14px}footer{color:var(--mut);font-size:13px;margin-top:40px}
+</style></head><body><main>
+<div class="kick">The Unbuilt Index · updated <span id="upd"></span></div>
+<h1>Hacker News told us what it would pay for. <span id="h1n"></span> times.</h1>
+<p class="sub">Every Hacker News comment and post we could pull that says <b>“I'd pay for”</b>, <b>“someone should build”</b>, <b>“take my money”</b> or <b>“is there a tool that”</b>. Grouped by what people asked for. Ranked by how many <i>different</i> people asked. Pick one and build it. They already asked.</p>
+<div class="stats" id="stats"></div>
+
+<h2>Is anyone asking for your idea?</h2>
+<p class="note">Type what you build. Searches all <span id="nreq"></span> request sentences in your browser.</p>
+<div class="search"><input id="s" placeholder="e.g. invoice, email client, linux laptop, note taking" autocomplete="off"><button id="live" class="ghost" style="padding:12px 14px">Also search live HN</button></div>
+<div class="res" id="res"></div>
+
+<h2>The most-asked-for things</h2>
+<p class="note">Each card is a group of similar requests. The big number counts different HN accounts. Click a card to read every request, each linked to the original comment.</p>
+<div id="themes"></div>
+
+<h2>Posts HN said “take my money” to</h2>
+<p class="note">Products and launches where 2+ different people replied at the top level with “I'd pay for this”, “take my money” or similar.</p>
+<div id="paid"></div>
+
+<div class="cta">
+<b>This is the 19-year view. The same signal shows up every day.</b>
+<p>People type “is there a tool that…” right now. <a href="https://nidhi-bhai.github.io/buyer-signal-finder/">Buyer Signal Finder</a> searches Hacker News for those phrases live, free, no signup.</p>
+<p>Want X covered? <a href="https://nidhi-bhai.github.io/buyer-hunt/">Buyer Hunt</a>: 30 people on X who asked for what you built in the last 14 days, a reply drafted for each. $49, 24h.</p>
+</div>
+
+<h2>How this was made</h2>
+<p class="note">Source: the public <a href="https://hn.algolia.com/api">HN Algolia search API</a>, phrase queries across 2007–today. A sentence counts as a request when it holds one of 20 buyer phrases and names a concrete thing (not “I'd pay for this”). Requests about software and products are embedded with bge-small and grouped by similarity; groups need 3+ different accounts. Matching is phrase-based, so some noise stays in. A comment is words, not a purchase. Code, raw method and data are open: <a href="https://github.com/Nidhi-bhai/unbuilt">GitHub</a> · <a href="unbuilt-requests.csv">CSV</a> · <a href="data.json">JSON</a> · <a href="https://huggingface.co/datasets/Nidhibhai/unbuilt-index">Hugging Face</a>.</p>
+<footer>Built by <a href="https://x.com/RealNidhibhai">@RealNidhibhai</a>. Not affiliated with Hacker News or Y Combinator.</footer>
+</main>
+<script>
+const E=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const HN=id=>'https://news.ycombinator.com/item?id='+encodeURIComponent(id);
+const URL0='https://nidhi-bhai.github.io/unbuilt/';
+const fmt=n=>n.toLocaleString('en-US');
+let D;
+function item(w){return `<div class="item">“${E(w.t)}”<div class="meta"><a href="${HN(w.id)}" target="_blank" rel="noopener">${E(w.a)} · ${E(w.d)}${w.st?' · on: '+E(w.st):''}</a></div></div>`}
+function share(i){const c=D.clusters[i];const q=c.q.length>140?c.q.slice(0,137)+'…':c.q;
+ const t=`${c.n} different people on Hacker News asked for this:\n\n“${q}”\n\nFirst ask: ${c.first.slice(0,4)}. Latest: ${c.last.slice(0,4)}.\n\nThe Unbuilt Index`;
+ window.open('https://x.com/intent/post?text='+encodeURIComponent(t)+'&url='+encodeURIComponent(URL0+'#t'+(i+1)),'_blank')}
+function copy(i){navigator.clipboard.writeText(URL0+'#t'+(i+1));const b=document.getElementById('cp'+i);b.textContent='Copied ✨';setTimeout(()=>b.textContent='Copy link',1500)}
+function toggle(i){document.getElementById('it'+i).classList.toggle('open')}
+fetch('data.json').then(r=>r.json()).then(d=>{D=d;const s=d.stats;
+ document.getElementById('upd').textContent=d.updated;document.getElementById('h1n').textContent=fmt(s.matched);document.getElementById('nreq').textContent=fmt(s.requests);
+ document.getElementById('stats').innerHTML=[[s.matched,'HN comments & posts matched'],[s.requests,'concrete request sentences'],[s.people,'different HN accounts asking'],[s.product,'about software & products'],[s.themes,'themes asked by 3+ people']].map(([n,l])=>`<div class="stat"><b>${fmt(n)}</b><span>${l}</span></div>`).join('');
+ document.getElementById('themes').innerHTML=d.clusters.map((c,i)=>`<div class="theme" id="t${i+1}"><div class="top"><div class="rank">#${i+1}</div><div class="n">${c.n}<small>people</small></div><div style="flex:1;cursor:pointer" onclick="toggle(${i})"><div class="q">“${E(c.q)}”</div><div class="meta">Asked ${E(c.first.slice(0,4))} → ${E(c.last.slice(0,4))} · ${c.items.length} requests</div><div class="chips">${c.kw.map(k=>`<span>${E(k)}</span>`).join('')}</div></div></div>
+ <div class="acts"><button class="ghost" onclick="toggle(${i})">Read all ${c.items.length}</button><button class="ghost" onclick="share(${i})">Share on X</button><button class="ghost" id="cp${i}" onclick="copy(${i})">Copy link</button></div>
+ <div class="items" id="it${i}">${c.items.map(item).join('')}</div></div>`).join('');
+ document.getElementById('paid').innerHTML=d.paid.map((p,i)=>`<div class="theme"><div class="top"><div class="rank">#${i+1}</div><div class="n">${p.n}<small>people</small></div><div style="flex:1"><div class="q"><a href="${HN(p.sid)}" target="_blank" rel="noopener" style="color:var(--fg)">${E(p.title)}</a></div>${p.q.map(q=>`<div class="meta">“${E(q.t)}” · <a href="${HN(q.id)}" target="_blank" rel="noopener">${E(q.a)}</a></div>`).join('')}</div></div></div>`).join('');
+ const h=location.hash.match(/^#t(\d+)$/);if(h){const el=document.getElementById('t'+h[1]);if(el){document.getElementById('it'+(h[1]-1)).classList.add('open');el.scrollIntoView();el.style.borderColor='var(--acc)'}}
+});
+const sIn=document.getElementById('s'),res=document.getElementById('res');let tm;
+sIn.addEventListener('input',()=>{clearTimeout(tm);tm=setTimeout(run,150)});
+function run(){const q=sIn.value.trim().toLowerCase();if(!D||q.length<2){res.innerHTML='';return}
+ const terms=q.split(/\s+/);const m=D.all.filter(w=>{const t=w.t.toLowerCase();return terms.every(x=>t.includes(x))});
+ res.innerHTML=`<p><b>${fmt(m.length)}</b> request${m.length==1?'':'s'} mention “${E(q)}”.${m.length?'':' No one in this dataset. Try the live search, or a broader word.'}</p>`+m.slice(0,40).map(item).join('')+(m.length>40?`<p class="note">Showing 40 of ${fmt(m.length)}. Full list in the <a href="unbuilt-requests.csv">CSV</a>.</p>`:'')}
+const strip=t=>{const d=document.createElement('div');d.innerHTML=(t||'').replace(/<p>/g,' ');return d.textContent};
+document.getElementById('live').onclick=async()=>{const q=sIn.value.trim();if(!q){sIn.focus();return}
+ res.innerHTML='<p class="note">Searching live Hacker News…</p>';
+ const ph=['i would pay for','i\'d pay for','is there a tool','someone should build','looking for a tool','alternative to'];
+ try{const rs=await Promise.all(ph.map(p=>fetch('https://hn.algolia.com/api/v1/search_by_date?tags=comment&hitsPerPage=50&query='+encodeURIComponent('"'+p+'" '+q)).then(r=>r.json()).catch(()=>({hits:[]}))));
+ const seen=new Set();const hs=[];const ql=q.toLowerCase().split(/\s+/);rs.forEach(r=>r.hits.forEach(h=>{const t=strip(h.comment_text).toLowerCase().replace(/[\u2018\u2019]/g,"'");if(!seen.has(h.objectID)&&ph.some(p=>t.includes(p))&&ql.every(x=>t.includes(x))){seen.add(h.objectID);hs.push(h)}}));hs.sort((a,b)=>b.created_at_i-a.created_at_i);
+ res.innerHTML=`<p><b>${hs.length}</b> live HN comments with buyer phrases + “${E(q)}”, newest first.</p>`+hs.slice(0,30).map(h=>item({id:h.objectID,a:h.author,d:(h.created_at||'').slice(0,10),t:strip(h.comment_text).slice(0,300),st:h.story_title||''})).join('');
+ }catch(e){res.innerHTML='<p class="note">Live search failed. Try again.</p>'}};
+</script></body></html>
