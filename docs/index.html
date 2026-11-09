@@ -29,11 +29,22 @@ button{cursor:pointer;border:0;border-radius:10px;padding:12px 16px;font-weight:
 .item{padding:8px 0;border-bottom:1px dashed var(--line);font-size:15px}.item .meta a{color:var(--mut)}
 .res{margin-top:14px}.cta{background:linear-gradient(135deg,#1c1310,#15151c);border:1px solid #3a2418;border-radius:14px;padding:20px;margin-top:40px}
 .note{color:var(--mut);font-size:14px}footer{color:var(--mut);font-size:13px;margin-top:40px}
+.built{background:linear-gradient(135deg,#10201a,#15151c);border:1px solid #1f4a37;border-radius:14px;padding:18px 20px;margin:22px 0}.built .kick{color:#3ddc97}.bq{color:#d9d9e0;font-size:15px;margin:8px 0}.bq a{color:var(--mut);font-size:13px}
+.bbtn{display:inline-block;margin-top:6px;background:#3ddc97;color:#06140e;font-weight:700;padding:10px 14px;border-radius:10px;text-decoration:none}.bbtn.ghostl{background:transparent;color:#3ddc97;border:1px solid #1f4a37}
+.wb{display:inline-block;background:#3ddc97;color:#06140e;font-size:12px;font-weight:800;border-radius:99px;padding:2px 10px;margin-top:8px;text-decoration:none}
 </style></head><body><main>
 <div class="kick">The Unbuilt Index · updated <span id="upd"></span></div>
 <h1>Hacker News asked for <span id="h1n"></span> things. Here's what it would pay for.</h1>
 <p class="sub">We pulled every Hacker News comment and post we could find that says <b>“I'd pay for”</b>, <b>“someone should build”</b>, <b>“take my money”</b> or <b>“is there a tool that”</b>. Grouped by what people asked for. Ranked by how many <i>different</i> people asked. Pick one and build it. They already asked.</p>
 <div class="stats" id="stats"></div>
+<div class="built" id="built">
+<div class="kick">We built #10</div>
+<p class="bq">“I would pay money for a browser plugin that restyles every web page to a single readable/accessible design that I like.” <a href="https://news.ycombinator.com/item?id=40056016">xpl, 2024</a></p>
+<p class="bq">“I would pay for a firefox or chrome extension that lets you just toggle the whole browsing session or tab into reader mode” <a href="https://news.ycombinator.com/item?id=32999574">bityard, 2022</a></p>
+<p class="bq">“I would pay for this. At least a buck a year. Maybe 5. Maybe 10…” <a href="https://news.ycombinator.com/item?id=35228158">readonthegoapp, 2023</a>, on a thread about killing pop-ups</p>
+<p><b>5 different people said they'd pay. So we built it: <a href="https://nidhi-bhai.github.io/calmpage/">Calmpage</a></b>. It kills cookie banners, newsletter pop-ups and "open in app" bars, then shows any article in one design you pick. Free extension and bookmarklet; Pro is $3/month.</p>
+<a class="bbtn" href="https://nidhi-bhai.github.io/calmpage/">See Calmpage →</a> <a class="bbtn ghostl" href="https://nidhi-bhai.github.io/calmpage/demo.html">Try it on an awful page</a>
+</div>
 
 <h2>Is anyone asking for your idea?</h2>
 <p class="note">Type what you build. Searches all <span id="nreq"></span> request sentences in your browser.</p>
@@ -93,4 +104,5 @@ document.getElementById('live').onclick=async()=>{const q=sIn.value.trim();if(!q
  const seen=new Set();const hs=[];const ql=q.toLowerCase().split(/\s+/);rs.forEach(r=>r.hits.forEach(h=>{const t=strip(h.comment_text).toLowerCase().replace(/[\u2018\u2019]/g,"'");const ok=t.split(/(?<=[.!?])\s+|\n+/).some(x=>ph.some(p=>x.includes(p))&&ql.every(y=>x.includes(y)));if(!seen.has(h.objectID)&&ok){seen.add(h.objectID);hs.push(h)}}));hs.sort((a,b)=>b.created_at_i-a.created_at_i);
  res.innerHTML=`<p><b>${hs.length}</b> live HN comments where one sentence holds a buyer phrase and “${E(q)}”, newest first.</p>`+hs.slice(0,30).map(h=>item({id:h.objectID,a:h.author,d:(h.created_at||'').slice(0,10),t:snip(strip(h.comment_text),ph),st:h.story_title||''})).join('');
  }catch(e){res.innerHTML='<p class="note">Live search failed. Try again.</p>'}};
-</script></body></html>
+</script><script>(function w(n){var t=document.getElementById('t10');if(t&&!t.querySelector('.wb')){var a=document.createElement('a');a.className='wb';a.href='https://nidhi-bhai.github.io/calmpage/';a.textContent='✓ We built this: Calmpage →';t.querySelector('.top > div[style]').appendChild(a);}else if(!t&&n<50)setTimeout(function(){w(n+1)},200);})(0);</script>
+</body></html>
