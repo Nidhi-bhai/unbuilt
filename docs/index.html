@@ -85,12 +85,12 @@ function run(){const q=sIn.value.trim().toLowerCase();if(!D||q.length<2){res.inn
  const terms=q.split(/\s+/);const m=D.all.filter(w=>{const t=w.t.toLowerCase();return terms.every(x=>t.includes(x))});
  res.innerHTML=`<p><b>${fmt(m.length)}</b> request${m.length==1?'':'s'} mention “${E(q)}”.${m.length?'':' No one in this dataset. Try the live search, or a broader word.'}</p>`+m.slice(0,40).map(item).join('')+(m.length>40?`<p class="note">Showing 40 of ${fmt(m.length)}. Full list in the <a href="unbuilt-requests.csv">CSV</a>.</p>`:'')}
 const strip=t=>{const d=document.createElement('div');d.innerHTML=(t||'').replace(/<p>/g,' ');return d.textContent};
-const snip=(t,ph)=>{const n=t.replace(/[\u2018\u2019]/g,"'");const ss=n.split(/(?<=[.!?])\s+/);const hit=ss.find(x=>ph.some(p=>x.toLowerCase().includes(p)));return (hit||n).slice(0,300)};
+const snip=(t,ph)=>{const n=t.replace(/[\u2018\u2019]/g,"'");const ss=n.split(/(?<=[.!?])\s+/);const ql2=(document.getElementById('s').value||'').toLowerCase().trim().split(/\s+/);const hit=ss.find(x=>{const l=x.toLowerCase();return ph.some(p=>l.includes(p))&&ql2.every(y=>l.includes(y))})||ss.find(x=>ph.some(p=>x.toLowerCase().includes(p)));return (hit||n).slice(0,300)};
 document.getElementById('live').onclick=async()=>{const q=sIn.value.trim();if(!q){sIn.focus();return}
  res.innerHTML='<p class="note">Searching live Hacker News…</p>';
- const ph=['i would pay for','i\'d pay for','is there a tool','someone should build','looking for a tool','alternative to'];
+ const ph=['i would pay for','i\'d pay for','is there a tool','someone should build','looking for a tool','wish there was','take my money'];
  try{const rs=await Promise.all(ph.map(p=>fetch('https://hn.algolia.com/api/v1/search_by_date?tags=comment&hitsPerPage=50&query='+encodeURIComponent('"'+p+'" '+q)).then(r=>r.json()).catch(()=>({hits:[]}))));
- const seen=new Set();const hs=[];const ql=q.toLowerCase().split(/\s+/);rs.forEach(r=>r.hits.forEach(h=>{const t=strip(h.comment_text).toLowerCase().replace(/[\u2018\u2019]/g,"'");if(!seen.has(h.objectID)&&ph.some(p=>t.includes(p))&&ql.every(x=>t.includes(x))){seen.add(h.objectID);hs.push(h)}}));hs.sort((a,b)=>b.created_at_i-a.created_at_i);
- res.innerHTML=`<p><b>${hs.length}</b> live HN comments with buyer phrases + “${E(q)}”, newest first.</p>`+hs.slice(0,30).map(h=>item({id:h.objectID,a:h.author,d:(h.created_at||'').slice(0,10),t:snip(strip(h.comment_text),ph),st:h.story_title||''})).join('');
+ const seen=new Set();const hs=[];const ql=q.toLowerCase().split(/\s+/);rs.forEach(r=>r.hits.forEach(h=>{const t=strip(h.comment_text).toLowerCase().replace(/[\u2018\u2019]/g,"'");const ok=t.split(/(?<=[.!?])\s+|\n+/).some(x=>ph.some(p=>x.includes(p))&&ql.every(y=>x.includes(y)));if(!seen.has(h.objectID)&&ok){seen.add(h.objectID);hs.push(h)}}));hs.sort((a,b)=>b.created_at_i-a.created_at_i);
+ res.innerHTML=`<p><b>${hs.length}</b> live HN comments where one sentence holds a buyer phrase and “${E(q)}”, newest first.</p>`+hs.slice(0,30).map(h=>item({id:h.objectID,a:h.author,d:(h.created_at||'').slice(0,10),t:snip(strip(h.comment_text),ph),st:h.story_title||''})).join('');
  }catch(e){res.innerHTML='<p class="note">Live search failed. Try again.</p>'}};
 </script></body></html>
